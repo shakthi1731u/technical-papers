@@ -131,7 +131,3 @@ notification.notify("Hello")
 - Makes testing easier.
 - Helps developers add new features.
 - Reduces the risk of breaking existing code during changes.
-
-## Remember
-
-SOLID principles are design guidelines, not strict syntax rules. Apply them when they make code clearer. Avoid adding unnecessary classes or complexity just to follow a principle.
