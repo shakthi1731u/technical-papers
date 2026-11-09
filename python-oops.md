@@ -225,6 +225,3 @@ Special methods have double underscores at the beginning and end. Python calls t
 | Overriding | Replaces inherited method behaviour |
 | `super()` | Calls parent-class behaviour |
 
-## Remember
-
-Use classes when they help organise related data and behaviour. Not every small Python program needs OOP. Choose the structure that makes the code easier to understand and maintain.
