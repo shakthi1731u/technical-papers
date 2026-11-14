@@ -1,4 +1,4 @@
-# AMA Questions – Cheatsheet
+# AMA Questions
 
 Simple explanations and examples for all 16 questions from today's AMA session.
 
