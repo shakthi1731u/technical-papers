@@ -1,273 +1,170 @@
-# HTML Cheatsheet: The Ultimate Beginner-to-Pro Guide
+# HTML5 Architecture & Document Engineering Cheatsheet
 
-**HTML (HyperText Markup Language)** is the standard skeleton of every webpage. Think of it as the framing and drywall of a house: it defines what everything *is* (a heading, a paragraph, a button, an image) before CSS comes in to paint the walls and arrange the furniture.
+**HTML5 (HyperText Markup Language)** defines the semantic document tree, accessibility roles, and machine-readable metadata of a webpage. Keeping HTML strictly focused on structure and meaning—while delegating all visual layout to CSS—creates resilient, accessible, and SEO-friendly applications.
 
 ---
 
-## 1. Basic HTML Document Boilerplate
+## 1. Basic HTML5 Document Boilerplate & Common Header Meta Tags
 
-Every HTML page starts with a standard structure. In most code editors (like VS Code), typing `!` and pressing `Tab` generates this automatically.
+The `<head>` element configures how browsers decode, scale, and index your page before rendering anything inside `<body>`.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- 1. Character Encoding & Mobile Viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A brief summary of your page for search engines.">
-  <title>Page Title</title>
+
+  <!-- 2. SEO & Crawler Directives -->
+  <meta name="description" content="A concise 150-character summary for search engine results.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://example.com/current-page">
+
+  <!-- 3. Browser UI & Social Preview (Open Graph) Tags -->
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:title" content="Web Architecture & CSS Layout Systems">
+  <meta property="og:description" content="Technical reference for semantic HTML5 and modular CSS3.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://example.com/preview-card.jpg">
+
+  <title>Page Title | Brand</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Hello World</h1>
-  <p>Welcome to my first webpage.</p>
+  <p>Semantic document content.</p>
 </body>
 </html>
 ```
 
-### What's happening here?
-* **`<!DOCTYPE html>`**: Tells the browser to render the page using modern HTML5 standards.
-* **`<html lang="en">`**: The root container. The `lang` attribute helps screen readers pronounce words correctly and aids search engines.
-* **`<head>`**: The "brain" of the page. Nothing inside `<head>` is visible on the page itself; it holds metadata, page titles, and links to CSS stylesheets.
-* **`<meta name="viewport" ...>`**: Crucial for mobile responsiveness—it ensures your site scales properly on phones and tablets.
-* **`<body>`**: Everything visible to the user lives inside here.
+### Key Header Meta Tags Explained
+* **`<meta charset="UTF-8">`**: Ensures universal character rendering across languages and symbols.
+* **`<meta name="viewport" content="width=device-width, initial-scale=1.0">`**: Prevents mobile browsers from shrinking a desktop-sized canvas onto a phone screen.
+* **`<meta name="description" ...>`**: Supplies the descriptive snippet displayed beneath your link in search engine results.
+* **`<meta name="robots" ...>`**: Instructs search crawlers whether to index the page (`index`/`noindex`) and follow links (`follow`/`nofollow`).
+* **`<meta property="og:*">`**: Open Graph tags used by social platforms and messaging apps to generate rich preview cards.
+* **`<meta name="theme-color" ...>`**: Tints the mobile browser's top address bar to match your brand palette.
 
 ---
 
-## 2. Common Text & Structural Elements
+## 2. Document Flow: Inline vs. Block Elements
 
-| Tag | Purpose | Human Context / Tip |
-|---|---|---|
-| `<h1>`–`<h6>` | Headings | `<h1>` is the main title (use only one per page for good SEO); `<h6>` is the smallest subheading. |
-| `<p>` | Paragraph | Automatically adds a bit of breathing room (margin) above and below the text. |
-| `<br>` | Line break | Forces a single line break (great for poems or addresses, not for spacing out paragraphs). |
-| `<hr>` | Thematic break | Renders a horizontal line to separate distinct topics or sections. |
-| `<strong>` | Important text | Renders as **bold** and tells screen readers to emphasize the word strongly. |
-| `<em>` | Emphasized text | Renders as *italic* and adds verbal stress for accessibility tools. |
-| `<b>` / `<i>` | Bold / Italic | Purely visual styling without adding extra semantic importance. |
-| `<span>` | Inline container | Wraps a small piece of text inside a line so you can style it with CSS. |
-| `<div>` | Block container | A generic invisible box used to group elements together for layout styling. |
-| `<pre>` | Preformatted text | Preserves exact spaces and line breaks from your code editor. |
-| `<code>` | Code snippet | Displays text in a monospace font to represent computer code. |
+In normal HTML document flow, every rendered element defaults to either a **block-level** or **inline-level** formatting context.
 
----
-
-## 3. Links and Images
-
-Links connect the web together, and images bring pages to life.
+| Feature | Block-Level Elements | Inline-Level Elements |
+| :--- | :--- | :--- |
+| **Line Behavior** | Always starts on a new line and pushes following elements down. | Flows horizontally within the current line of text. |
+| **Default Width** | Expands to fill `100%` of its parent container's width. | Shrinks to fit only the width of its inner content. |
+| **Dimensions (`width` / `height`)** | Fully respected. | Ignored (except *inline-replaced* elements like `<img>`). |
+| **Vertical Margins (`top` / `bottom`)** | Fully respected (subject to vertical margin collapsing). | Ignored; only horizontal (`left` / `right`) margins apply. |
+| **Common Examples** | `<div>`, `<p>`, `<h1>`–`<h6>`, `<section>`, `<article>`, `<header>`, `<nav>`, `<footer>`, `<ul>`, `<ol>`, `<li>`, `<table>`, `<form>` | `<span>`, `<a>`, `<strong>`, `<em>`, `<b>`, `<i>`, `<code>`, `<label>`, `<input>`, `<img>` |
 
 ```html
-<!-- Standard Link -->
-<a href="https://example.com" target="_blank" rel="noopener noreferrer">Open external link</a>
+<!-- Block Example: Stacks vertically -->
+<section class="card">
+  <h2>Block Heading</h2>
+  <p>This paragraph occupies the full width of its container.</p>
+</section>
 
-<!-- Jump to a section on the same page -->
-<a href="#contact-section">Jump to Contact</a>
-
-<!-- Image -->
-<img src="images/photo.jpg" alt="A golden retriever playing fetch in a sunny park" width="400">
+<!-- Inline Example: Flows smoothly inside a sentence -->
+<p>
+  Use <code>&lt;span&gt;</code> or <a href="#docs">anchor links</a> without breaking the line flow.
+</p>
 ```
 
-* **`href`**: The destination URL or internal file path.
-* **`target="_blank"`**: Forces the link to open in a new browser tab.
-* **`rel="noopener noreferrer"`**: A security and privacy best practice whenever using `target="_blank"`.
-* **`src`**: The path or URL to the image file.
-* **`alt`**: **Never skip this!** It describes the image for visually impaired users using screen readers and displays if the image fails to load.
+---
+
+## 3. Semantic HTML5 Landmarks & Accessibility (a11y)
+
+Replace generic `<div>` wrappers with **semantic landmarks** so screen readers, keyboard navigators, and search engines understand the hierarchy of your page.
+
+```html
+<header>Site logo, top banner, and primary controls</header>
+<nav aria-label="Primary Navigation">Main navigation links</nav>
+
+<main>
+  <section aria-labelledby="pillars-heading">
+    <h2 id="pillars-heading">Core Architectural Pillars</h2>
+    <article>Self-contained, reusable content card or post</article>
+  </section>
+  <aside>Supplementary sidebar notes or related links</aside>
+</main>
+
+<footer>Copyright, legal links, and secondary navigation</footer>
+```
+
+### Accessibility Golden Rules
+1. **Heading Hierarchy**: Use a single `<h1>` per page and step down logically (`<h1>` $\rightarrow$ `<h2>` $\rightarrow$ `<h3>`) without skipping levels.
+2. **Explicit Form Labels**: Always link `<label for="id">` to `<input id="id">` so clicking the label focuses the input and screen readers announce its purpose.
+3. **Meaningful `alt` Text**: Describe the informational content of `<img>` tags (`alt="Diagram of the CSS Box Model"`), or use `alt=""` for purely decorative graphics.
 
 ---
 
-## 4. Lists
+## 4. Common Text, Links, Lists & Media Elements
 
-HTML gives you three distinct ways to organize items:
+### Text & Phrasing
+* `<strong>` / `<em>`: Semantic **bold** and *italic* emphasis (conveys vocal stress to assistive tech).
+* `<code>` / `<pre>`: Inline code snippets and preformatted multi-line code blocks.
+* `<hr>` / `<br>`: Thematic section divider and single line break.
 
+### Links & Images
 ```html
-<!-- Unordered list (bullet points - order doesn't matter) -->
-<ul>
-  <li>Milk</li>
-  <li>Bread</li>
-</ul>
+<!-- External link with security attributes -->
+<a href="https://developer.mozilla.org" target="_blank" rel="noopener noreferrer">MDN Web Docs</a>
 
-<!-- Ordered list (numbered - sequence matters) -->
-<ol>
-  <li>Preheat the oven to 180°C</li>
-  <li>Bake for 25 minutes</li>
-</ol>
+<!-- Responsive image with descriptive alt text -->
+<img src="box-model.png" alt="Concentric layers of content, padding, border, and margin" width="600" height="400">
+```
 
-<!-- Description list (terms and their definitions) -->
+### Lists & Tables
+```html
+<!-- Unordered, Ordered, and Description Lists -->
+<ul><li>Bullet item</li></ul>
+<ol><li>Numbered step</li></ol>
 <dl>
-  <dt>HTML</dt>
-  <dd>The standard markup language for creating webpages.</dd>
+  <dt>Specificity</dt>
+  <dd>The algorithm browsers use to resolve conflicting CSS rules.</dd>
 </dl>
-```
 
----
-
-## 5. Tables
-
-Use tables for **tabular data** (like spreadsheets, schedules, or pricing comparisons)—never for overall page layout.
-
-```html
+<!-- Semantic Data Table -->
 <table>
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Role</th>
-      <th>City</th>
-    </tr>
+    <tr><th>Tier</th><th>Selector Type</th><th>Weight</th></tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Sam</td>
-      <td>Frontend Developer</td>
-      <td>Bengaluru</td>
-    </tr>
-    <tr>
-      <td>Priya</td>
-      <td>UX Designer</td>
-      <td>Chennai</td>
-    </tr>
+    <tr><td>1</td><td>Inline Style</td><td>(1,0,0,0)</td></tr>
+    <tr><td>2</td><td>ID Selector</td><td>(0,1,0,0)</td></tr>
   </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="3">Total Team Members: 2</td>
-    </tr>
-  </tfoot>
 </table>
 ```
 
-* `<table>`: Wraps the entire table.
-* `<thead>`, `<tbody>`, `<tfoot>`: Logically groups the header, main rows, and summary footer.
-* `<tr>`: Table Row.
-* `<th>`: Table Header cell (bold and centered by default).
-* `<td>`: Table Data cell.
-
 ---
 
-## 6. Forms & User Input
-
-Forms are how users interact with your site—logging in, searching, or sending messages.
+## 5. Accessible Forms & Specialized Inputs
 
 ```html
-<form action="/submit" method="post">
-  <!-- Always connect labels to inputs using 'for' and 'id' -->
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" placeholder="e.g. code_ninja" required>
+<form action="/subscribe" method="post">
+  <label for="full-name">Full Name:</label>
+  <input type="text" id="full-name" name="full_name" placeholder="Ada Lovelace" required>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
+  <label for="email">Work Email:</label>
+  <input type="email" id="email" name="email" placeholder="ada@example.org" required>
 
-  <label for="city">City:</label>
-  <select id="city" name="city">
-    <option value="bengaluru">Bengaluru</option>
-    <option value="chennai">Chennai</option>
+  <label for="topic">Primary Focus:</label>
+  <select id="topic" name="topic">
+    <option value="layout">Flexbox &amp; Grid</option>
+    <option value="a11y">Semantic HTML &amp; Accessibility</option>
   </select>
 
-  <label for="message">Message:</label>
-  <textarea id="message" name="message" rows="4" placeholder="Write something..."></textarea>
-
-  <button type="submit">Send Message</button>
+  <button type="submit">Register</button>
 </form>
 ```
 
-### Handy `<input>` Types
-Using the right input type triggers helpful mobile keyboards (like a number pad for `tel`) and built-in browser validation:
-
-* `type="text"` – Single-line text
-* `type="password"` – Masks characters with dots
-* `type="email"` – Validates for an `@` symbol
-* `type="number"` – Numeric input with stepper arrows
-* `type="date"` – Native calendar date picker
-* `type="checkbox"` – Select zero, one, or many options
-* `type="radio"` – Select only *one* option from a group (share the same `name` attribute)
-* `type="file"` – File upload picker
-* `type="search"` / `type="tel"` / `type="url"` – Specialized text inputs
-
 ---
 
-## 7. Semantic HTML5 Elements
+## 6. Attributes & HTML Entities
 
-Instead of wrapping everything in meaningless `<div>` tags ("div soup"), use **semantic tags** that describe the role of the content. This drastically improves SEO and accessibility.
-
-```html
-<header>Top banner, logo, and intro</header>
-<nav>Main navigation menu links</nav>
-<main>
-  <section>
-    <h2>Latest Articles</h2>
-    <article>An independent, self-contained blog post</article>
-  </section>
-  <aside>Related links, sidebar, or author bio</aside>
-</main>
-<footer>Copyright info, contact links, and sitemap</footer>
-```
-
----
-
-## 8. Audio and Video
-
-Modern HTML makes embedding media straightforward without third-party plugins:
-
-```html
-<audio controls src="podcast-episode.mp3">
-  Your browser does not support the audio element.
-</audio>
-
-<video controls width="640" poster="thumbnail.jpg">
-  <source src="tutorial.mp4" type="video/mp4">
-  Your browser does not support HTML video.
-</video>
-```
-*(Tip: Adding `controls` gives the user play, pause, and volume buttons; `poster` sets a preview image before the video plays.)*
-
----
-
-## 9. Essential Attributes
-
-Attributes live inside the opening tag and modify an element's behavior or identity:
-
-```html
-<p id="welcome-banner" class="highlight text-large" title="Hover tooltip">Hello!</p>
-```
-
-* **`id`**: A **unique** identifier (can only be used once per page).
-* **`class`**: A reusable label you can apply to many elements for CSS styling or JavaScript targeting.
-* **`data-*`**: Custom attributes (e.g., `data-user-id="42"`) used to store extra info for JavaScript.
-* **`disabled`**: Greys out a form input or button so it can't be clicked.
-* **`readonly`**: Prevents editing an input's text, though users can still copy it.
-* **`required`**: Prevents form submission until the field is filled out.
-* **`hidden`**: Completely hides the element from view.
-
----
-
-## 10. Block vs. Inline Elements
-
-Understanding how elements sit on the page prevents 90% of early layout headaches:
-
-* **Block-level elements** (`<div>`, `<p>`, `<h1>`–`<h6>`, `<section>`, `<ul>`): Always start on a new line and stretch out to take up the full width available.
-* **Inline elements** (`<span>`, `<a>`, `<strong>`, `<em>`, `<img>`): Sit neatly alongside text without forcing a new line, only taking up as much width as their content needs.
-
----
-
-## 11. Common HTML Entities
-
-Some characters are reserved by HTML syntax (like `<` and `>`). Use entities to display them safely as text:
-
-| Entity | Displays | Description |
-|---|---|---|
-| `&lt;` | `<` | Less-than sign |
-| `&gt;` | `>` | Greater-than sign |
-| `&amp;` | `&` | Ampersand |
-| `&quot;` | `"` | Double quotation mark |
-| `&copy;` | `©` | Copyright symbol |
-| `&nbsp;` | *(space)* | Non-breaking space (prevents awkward line wraps between two words) |
-
----
-
-## 12. Comments & Best Practices
-
-```html
-<!-- Comments are invisible in the browser; use them to leave notes for yourself or your team -->
-```
-
-### Golden Rules of HTML
-1. **Separation of concerns**: Use HTML strictly for structure and meaning—leave colors, fonts, and layouts to CSS.
-2. **Stay consistent**: Write all tags and attributes in lowercase and wrap attribute values in double quotes (`class="btn"`).
-3. **Accessibility first**: Always pair `<label>` with `<input>`, include `alt` attributes on images, and follow logical heading hierarchy (`<h1>` $\rightarrow$ `<h2>` $\rightarrow$ `<h3>`).
+* **Structural vs. Styling Hooks**: Reserve `id` for unique anchors (`#top`) and form associations (`for="email"`); use `class` for reusable CSS structural and styling rules.
+* **Custom Data Attributes**: `data-state="open"` stores metadata cleanly for JavaScript interactions.
+* **Reserved Entities**: `&lt;` (`<`), `&gt;` (`>`), `&amp;` (`&`), `&quot;` (`"`), `&copy;` (`©`), `&nbsp;` (non-breaking space).
